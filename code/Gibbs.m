@@ -7,7 +7,7 @@ T = n*n*20;
 
 for t = 1:T
     i = randi(n,1,2);
-    prob = 1/(1+exp(-(eta*neighbours(X,n,i))));
+    prob = sigmoid(eta*(1+neighbours(X,n,i)));
     if rand <= prob
         X(i(1), i(2)) = 1;
     else
