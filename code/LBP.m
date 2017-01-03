@@ -5,7 +5,7 @@ function [X] = LBP(n, mu, sigma, damp)
 messages = ones(n,n,4,2)*0.5;
 % messages = 
 
-T = 20;
+T = 10;
 
 for t = 1:T
     message_left = ones(n, n, 2);
@@ -49,10 +49,12 @@ for t = 1:T
     messages(:,:,2,:) = messages(:,:,2,:)./repmat(sum(messages(:,:,2,:),4), 1,1,1,2);
     messages(:,:,3,:) = messages(:,:,3,:)./repmat(sum(messages(:,:,3,:),4), 1,1,1,2);
     messages(:,:,4,:) = messages(:,:,4,:)./repmat(sum(messages(:,:,4,:),4), 1,1,1,2);
+    aux = sum(exp(mu)*squeeze(prod(messages, 3)),3);
+    aux(10,10, :)
 %     messages(:,:,1,1)
 end
 
 X = exp(mu)*squeeze(prod(messages, 3));
 X = X(:,:,2)./sum(X,3);
-X
+% X
 X = rand(n)<X;
