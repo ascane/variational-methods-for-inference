@@ -4,10 +4,10 @@ s2 = 0;
 for i = 1:n
     for j = 1:n
         if i+1 <= n
-            s2 = s2 + mu(i, j)*mu(i+1, j);
+            s2 = s2 + mu(i, j) * mu(i+1, j) * 2;
         end
         if j+1 <= n
-            s2 = s2 + mu(i, j)*mu(i, j+1);
+            s2 = s2 + mu(i, j) * mu(i, j+1) * 2;
         end
     end
 end
