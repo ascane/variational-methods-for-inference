@@ -1,10 +1,10 @@
-function [X, A] = mean_field(n, eta)
+function [X, A] = mean_field(n, eta, sigma)
     A = [];
     mu = rand(n, n);
-    T = n * n * 20;
+    kernel = [0,1,0;1,0,1;0,1,0];
+    T = 1000;
     for t = 1 : T
-        i = randi(n, 1, 2);
-        mu(i(1), i(2)) = sigmoid(eta * (1 + neighbours(mu, n, i)));
+        mu = sigmoid(eta + sigma*conv2(mu, kernel, 'same'));
         A = [A, log_partition(eta, mu, n)];
     end
     X = rand(n) < mu;
