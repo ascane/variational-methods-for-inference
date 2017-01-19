@@ -8,7 +8,7 @@ T = 10;
 
 M = [1 exp(mu); 1 exp(mu+sigma)]';
 
-A = ones(10*n*n);
+A = ones(1, T*n*n);
 count =1 ;
 for t = 1:T
     for i = 1:n
@@ -38,14 +38,18 @@ for t = 1:T
                 message_bottom = ones(1,2);
             end
             %normalization
+            message_left = (1-damp)*squeeze(messages(i,j,1,:)) + damp* message_left';
+            message_top = (1-damp)*squeeze(messages(i,j,2,:)) + damp*message_top';
+            message_right = (1-damp)*squeeze(messages(i,j,3,:)) + damp*message_right';
+            message_bottom = (1-damp)*squeeze(messages(i,j,4,:)) + damp*message_bottom';
             message_left = message_left ./ sum(message_left);
             message_right = message_right ./ sum(message_right);
             message_top = message_top ./ sum(message_top);
             message_bottom = message_bottom ./ sum(message_bottom);
-            messages(i,j,1,:) = (1-damp)*message_left + damp* message_left;
-            messages(i,j,2,:) = (1-damp)*message_right + damp*message_right;
-            messages(i,j,3,:) = (1-damp)*message_top + damp*message_top;
-            messages(i,j,4,:) = (1-damp)*message_bottom + damp*message_bottom;
+            messages(i,j,1,:) = message_left;
+            messages(i,j,2,:) = message_top;
+            messages(i,j,3,:) = message_right;
+            messages(i,j,4,:) = message_bottom;
             aux = sum(exp(mu)*squeeze(prod(messages, 3)),3);
             A(count) = aux(i,j, :);
             count = count+1;
