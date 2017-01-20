@@ -1,4 +1,4 @@
-function [X] = mean_field(n, sigma, percent)
+function [X, A] = mean_field(n, sigma, percent)
 
 if nargin <3
     percent = 0.5;
@@ -20,13 +20,14 @@ eta = zeros(n,n);
 % sigma = 4*sigma;
 
 T = n*n*100;
-
+A = zeros(1, T);
 for t = 1:T
     i = randi(n,1,2);
 %     mu(i(1), i(2)) = 1/(1+exp(-(eta*neighbours(mu,n,i))));
 %     mu(i(1), i(2)) = sigmoid(eta(i(1), i(2)) + sigma * neighbours(mu, n, i));
     aux = eta(i(1), i(2)) + sigma * neighbours(mu, n, i);
     mu(i(1), i(2)) = (1-exp(-aux))/(1+exp(-aux));
+    A(t) = log_partition(eta, mu, sigma, n);
 end
 
 % (mu+1)/2
