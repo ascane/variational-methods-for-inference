@@ -24,7 +24,7 @@ messages = rand(n,n,4,2);
 % eta = 2*eta - 8*sigma;
 % sigma = 4*sigma;
 
-T = 50;
+T = 100;
 
 for t = 1:T
     message = prod(messages, 3);
