@@ -1,6 +1,6 @@
 setup;
 methods = {'gibbs', 'mf', 'lbp'};
-method = 'mf';
+method = 'gibbs';
 sz = 250;
 mu = 0;
 sigma = 1;
@@ -21,5 +21,5 @@ for sigma = [-1, -0.7, -0.3, 0, 0.3, 0.7, 1]
 end
 % log-partition function
 
-h = semilogy(A)
-set(h, 'linewidth', 2);
+%h = semilogy(A)
+%set(h, 'linewidth', 2);
