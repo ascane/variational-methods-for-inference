@@ -24,8 +24,8 @@ messages = rand(n,n,4,2);
 T = 20;
 
 % M = [1 exp(eta); 1 exp(mu+sigma)]';
-
-A = ones(T*n*n);
+A = [];
+%A = ones(T*n*n);
 count =1 ;
 for t = 1:T
     for i = 1:n
@@ -69,7 +69,7 @@ for t = 1:T
             messages(i,j,3,:) = message_right;
             messages(i,j,4,:) = message_bottom;
             aux = sum(exp(mu)*squeeze(prod(messages, 3)),3);
-            A(count) = aux(i,j, :);
+            %A(count) = aux(i,j, :);
             count = count+1;
         end
     end

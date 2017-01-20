@@ -1,6 +1,6 @@
 setup;
 methods = {'gibbs', 'mf', 'lbp'};
-method = 'mf';
+method = 'lbp';
 sz = 250;
 sigma = 1;
 percent = 0.5;
@@ -10,7 +10,7 @@ for sigma = [-1, -0.7, -0.3, 0, 0.3, 0.7, 1]
     elseif strcmp(method, 'mf')
         [X, A] = mean_field(sz, sigma, percent);
     else
-        X = LBP(50, 0.3, 0.5, 1);
+        [X, A] = LBP_iterative(sz, sigma, percent);
     end
     figure
     colormap(1 - gray);
