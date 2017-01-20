@@ -1,18 +1,36 @@
-function [X, A] = LBP_iterative(n, mu, sigma, damp)
+function [X, A] = LBP_iterative(n, sigma, percent, damp)
 % loopy belief propagation for Ising model
 % damp is the damping parameter used in message update
 % X = rand(n,n);
-messages = ones(n,n,4,2)*0.5;
 
-T = 10;
+if nargin < 3
+    percent = 0.5;
+    damp = 1;
+end
 
-M = [1 exp(mu); 1 exp(mu+sigma)]';
+
+if nargin < 4
+    damp = 1;
+end
+
+percent = 1-percent;
+% external field eta
+eta = rand(n,n);
+eta(eta>percent) = 1;
+eta(eta<=percent) = -1;
+
+messages = rand(n,n,4,2);
+
+T = 20;
+
+% M = [1 exp(eta); 1 exp(mu+sigma)]';
 
 A = ones(1, T*n*n);
 count =1 ;
 for t = 1:T
     for i = 1:n
         for j = 1:n
+            M = [exp(-eta(i,j)+sigma) exp(eta(i,j)-sigma); exp(-eta(i,j)-sigma) exp(eta(i,j)+sigma)]';
             if j > 1
                 message_left = squeeze(prod(messages(i, j-1, :, :), 3)./ messages(i, j-1, 3, :));
                 message_left = message_left' *M;

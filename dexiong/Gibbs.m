@@ -11,12 +11,12 @@ end
 % X(X<=percent) = -1;
 
 percent = 1-percent;
-X = ones(n,n)*0.5;
+X = zeros(n,n);
 eta = rand(n,n);
 eta(eta>percent) = 1;
 eta(eta<=percent) = -1;
 
-T = n*n*500;
+T = n*n*100;
 
 for t = 1:T
     i = randi(n,1,2);
