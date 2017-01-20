@@ -8,7 +8,7 @@ X = rand(n,n);
 percent = 1-percent;
 X(X>percent) = 1;
 X(X<=percent) = -1;
-T = n*n*20;
+T = n*n*50;
 
 for t = 1:T
     i = randi(n,1,2);
