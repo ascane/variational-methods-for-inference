@@ -8,7 +8,7 @@ T = 10;
 
 M = [1 exp(mu); 1 exp(mu+sigma)]';
 
-A = ones(1, T*n*n);
+A = ones(T*n*n);
 count =1 ;
 for t = 1:T
     for i = 1:n
@@ -38,7 +38,7 @@ for t = 1:T
                 message_bottom = ones(1,2);
             end
             %normalization
-            message_left = (1-damp)*squeeze(messages(i,j,1,:)) + damp* message_left';
+            message_left = (1-damp)*squeeze(messages(i,j,1,:)) + damp* message_left;
             message_top = (1-damp)*squeeze(messages(i,j,2,:)) + damp*message_top';
             message_right = (1-damp)*squeeze(messages(i,j,3,:)) + damp*message_right';
             message_bottom = (1-damp)*squeeze(messages(i,j,4,:)) + damp*message_bottom';

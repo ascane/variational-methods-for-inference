@@ -1,29 +1,39 @@
-function [X, A] = mean_field(n, eta, sigma, percent)
+function [X, A] = mean_field(n, sigma, percent)
 
-if nargin <4
+if nargin <3
     percent = 0.5;
 end
-percent = 1-percent;
 
-mu = rand(n,n);
-mu(mu>percent) = 1;
-mu(mu<=percent) = 0;
+A = []
+% mu = rand(n,n);
+% percent = 1-percent;
+% mu(mu>percent) = 1;
+% mu(mu<=percent) = 0;
+% eta = zeros(n,n);
+
+percent = 1-percent;
+eta = rand(n,n);
+eta(eta>percent) = 1;
+eta(eta<=percent) = -1;
+mu = ones(n,n)*0.5;
 
 eta = 2*eta - 8*sigma;
 sigma = 4*sigma;
 
 T = n*n*50;
-A = zeros(1, T);
 
 for t = 1:T
-    %mu(1, :) = 0;
-    %mu(end, :) = 0;
-    %mu(:, 1) = 1;
-    %mu(:, end) = 1;
     i = randi(n,1,2);
-    mu(i(1), i(2)) = sigmoid(eta + sigma * neighbours(mu, n, i));
-    %A(t) = log_partition(eta, sigma, mu, n);
+%     mu(i(1), i(2)) = 1/(1+exp(-(eta*neighbours(mu,n,i))));
+    mu(i(1), i(2)) = sigmoid(eta(i(1), i(2)) + sigma * neighbours(mu, n, i));
+%     aux = eta + sigma * neighbours(mu, n, i);
+%     mu(i(1), i(2)) = (1-exp(-aux))/(1+exp(-aux));
 end
+mu
+% (mu+1)/2
 X = ones(n,n);
+% X(rand(n,n) > (mu+1)/2) = -1;
 X(rand(n,n)>mu) = -1;
+
+
 end
