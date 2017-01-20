@@ -1,19 +1,11 @@
-function [A] = log_partition(eta, mu, n)
-s1 = sum(mu);
-s2 = 0;
-for i = 1:n
-    for j = 1:n
-        if i+1 <= n
-            s2 = s2 + mu(i, j) * mu(i+1, j) * 2;
-        end
-        if j+1 <= n
-            s2 = s2 + mu(i, j) * mu(i, j+1) * 2;
-        end
-    end
-end
-A = eta*(s1+s2) + sum(entropy(mu));
+function [A] = log_partition(eta, sigma, mu, n)
+s1 = sum(sum(mu));
+s2 = sum(sum(mu.*conv2circ(mu)));
+A = eta*s1+sigma*s2 + sum(sum(entropy(mu)));
 end
 
 function [H] = entropy(x)
 H = -(x*log(x) + (1-x)*log(1-x));
+H(isnan(H)) = 0;
+H(isinf(H)) = 0;
 end

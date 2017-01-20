@@ -1,11 +1,39 @@
-function [X, A] = mean_field(n, eta, sigma)
-    A = [];
-    mu = rand(n, n);
-    kernel = [0,1,0;1,0,1;0,1,0];
-    T = 1000;
-    for t = 1 : T
-        mu = sigmoid(eta + sigma*conv2(mu, kernel, 'same'));
-        A = [A, log_partition(eta, mu, n)];
-    end
-    X = rand(n) < mu;
+function [X, A] = mean_field(n, sigma, percent)
+
+if nargin <3
+    percent = 0.5;
+end
+
+A = []
+% mu = rand(n,n);
+% percent = 1-percent;
+% mu(mu>percent) = 1;
+% mu(mu<=percent) = 0;
+% eta = zeros(n,n);
+
+percent = 1-percent;
+eta = rand(n,n);
+eta(eta>percent) = 1;
+eta(eta<=percent) = -1;
+mu = ones(n,n)*0.5;
+
+eta = 2*eta - 8*sigma;
+sigma = 4*sigma;
+
+T = n*n*50;
+
+for t = 1:T
+    i = randi(n,1,2);
+%     mu(i(1), i(2)) = 1/(1+exp(-(eta*neighbours(mu,n,i))));
+    mu(i(1), i(2)) = sigmoid(eta(i(1), i(2)) + sigma * neighbours(mu, n, i));
+%     aux = eta + sigma * neighbours(mu, n, i);
+%     mu(i(1), i(2)) = (1-exp(-aux))/(1+exp(-aux));
+end
+mu
+% (mu+1)/2
+X = ones(n,n);
+% X(rand(n,n) > (mu+1)/2) = -1;
+X(rand(n,n)>mu) = -1;
+
+
 end
