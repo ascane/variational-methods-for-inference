@@ -4,17 +4,17 @@ if nargin <3
     percent = 0.5;
 end
 
-% eta = zeros(n,n);
-% X = rand(n,n);
-% percent = 1-percent;
-% X(X>percent) = 1;
-% X(X<=percent) = -1;
-
+eta = zeros(n,n);
+X = rand(n,n);
 percent = 1-percent;
-X = zeros(n,n);
-eta = rand(n,n);
-eta(eta>percent) = 1;
-eta(eta<=percent) = -1;
+X(X>percent) = 1;
+X(X<=percent) = -1;
+
+% percent = 1-percent;
+% X = zeros(n,n);
+% eta = rand(n,n);
+% eta(eta>percent) = 1;
+% eta(eta<=percent) = -1;
 
 T = n*n*100;
 

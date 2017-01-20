@@ -1,4 +1,4 @@
-function [X] = LBP(n, sigma, percent, damp)
+function [X,A] = LBP(n, sigma, percent, damp)
 % loopy belief propagation for Ising model
 % damp is the damping parameter used in message update
 
@@ -24,8 +24,9 @@ messages = rand(n,n,4,2);
 % eta = 2*eta - 8*sigma;
 % sigma = 4*sigma;
 
-T = 50;
-
+T = 200;
+A = zeros(1, T);
+count = 1;
 for t = 1:T
     message = prod(messages, 3);
     m_left = message./messages(:, :, 3, :);
@@ -57,12 +58,15 @@ for t = 1:T
     messages(:,:,2,:) = messages(:,:,2,:)./repmat(sum(messages(:,:,2,:),4), 1,1,1,2);
     messages(:,:,3,:) = messages(:,:,3,:)./repmat(sum(messages(:,:,3,:),4), 1,1,1,2);
     messages(:,:,4,:) = messages(:,:,4,:)./repmat(sum(messages(:,:,4,:),4), 1,1,1,2);
+    
+    A(count) = LBP_log_partition(messages, eta, sigma);
+    count = count+1;
 %     aux = sum(squeeze(prod(messages, 3)),3);
 %     aux(10,10, :)
 %     messages(:,:,1,1)
 end
 
 X = squeeze(prod(messages, 3));
-X = exp(eta).*X(:,:,2)./(exp(eta).*X(:,:,2)+X(:,:,1));
+X = exp(eta).*X(:,:,2)./(exp(eta).*X(:,:,2)+exp(-eta).*X(:,:,1));
 
 X = rand(n)<X;
