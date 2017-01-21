@@ -1,18 +1,20 @@
 % Gibbs sampling for Ising model
-function [X] = Gibbs(n, eta)
-    X = rand(n, n);
-    X(X > 0.5) = 1;
-    X(X <= 0.5) = 0;
-    T = n * n * 20;
-
+function [X] = Gibbs(n, eta, sigma, percent)
+    if nargin <4
+        percent = 0.5;
+    end
+    X = rand(n,n);
+    percent = 1-percent;
+    X(X>percent) = 1;
+    X(X<=percent) = -1;
+    T = n*n*100;
     for t = 1 : T
-        i = randi(n, 1, 2);
-        prob = sigmoid(eta * (1 + neighbours(X, n, i)));
+        i = randi(n,1,2);
+        prob = sigmoid(eta + sigma * neighbours(X, n, i));
         if rand <= prob
             X(i(1), i(2)) = 1;
         else
-            X(i(1), i(2)) = 0;
+            X(i(1), i(2)) = -1;
         end
     end
 end
-
